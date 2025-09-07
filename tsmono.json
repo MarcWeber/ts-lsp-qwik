@@ -1,0 +1,47 @@
+{
+  "package": {
+    "name": "",
+    "scripts": {
+      "build": "esbuild --preserve-symlinks --watch --platform=node --target=node10 --bundle  --sourcemap=inline  src/qwik-simple-actions2.ts src/lsp.ts --outdir=dist"
+    }
+  },
+
+  "devDependencies": [
+    "u-testrunner"
+  ],
+
+  "dependencies": [
+    "vscode-languageserver",
+    "vscode-languageserver-textdocument", 
+    "glob", 
+    "@types/node",
+    "typescript",
+    "u-simple-actions",
+    "tqdm",
+    "u-simple-actions2"
+  ],
+
+  "tsconfig": {
+    "compilerOptions": {
+      "strict": true,
+      "noEmit": true,
+      "jsx": "react-jsx",
+      "jsxFactory": "createElement",
+      "jsxFragmentFactory": "Fragment",
+      "module": "commonjs",
+      "target": "esnext",
+      "sourceMap": true,
+      "importHelpers": true,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "outDir":"./dist",
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "paths": {
+        "/*": ["src/*"]
+      }
+    },
+    "exclude": [
+    ]
+  }
+}
