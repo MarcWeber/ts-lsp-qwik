@@ -24,12 +24,14 @@ const main = async () => {
                     ...glob.sync(`${componentsDir()}/**/*.{tsx,jsx}`, { nodir: true })
                 ]
                 scanRoutesSetCache()
-                for (const v of tqdm(files)) {
-                    const text = fs.readFileSync(v, 'utf8')
+                for (const file of tqdm(files)) {
+                    const text = fs.readFileSync(file, 'utf8')
                     const doc = TextDocument.create('file:///', 'html', 1, text);
                     const diagnostics = validateDocument(doc)
-                    console.log(`FILE ${v}`);
-                    for (const v of diagnostics) console.log(JSON.stringify(v));
+                    console.log(`FILE ${file}`);
+                    for (const diag of diagnostics){
+                        console.log(`${file}:${diag.range.start.line}:${diag.range.start.character}: ${diag.message}`);
+                    }
                 }
 
                 console.dir(cache.routes_normalized, {depth: null});

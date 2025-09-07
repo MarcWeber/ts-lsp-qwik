@@ -16,7 +16,6 @@
     "glob", 
     "@types/node",
     "typescript",
-    "u-simple-actions",
     "tqdm",
     "u-simple-actions2"
   ],

@@ -21,7 +21,9 @@ export const cache = {
     routes_normalized: new Set() as Set<string>
 }
 
-export const normalize_route_path = (s: string) => s.replace('[...locale]', '__').replace(/\[[^\]]+\]/g,'[]').replace(/\[[^]]+\]/,'[]').replace(/\/$/, '')
+export const locale_str = '[...locale]'
+
+export const normalize_route_path = (s: string) => s.replace(locale_str, '__').replace(/\[[^\]]+\]/g,'[]').replace(/\[[^]]+\]/,'[]').replace(/\/$/, '')
 export const normalize_route_link = (s: string) => s                             .replace(/\[[^\]]+\]/g,'[]').replace(/\$\{[^\}]*\}/, '[]').replace(/\/$/, '')
 
 export function scanRoutesSetCache(){
@@ -33,7 +35,7 @@ export function scanRoutesSetCache(){
 export const routesDir = () => path.join(config.rootPath, 'src', 'routes');
 export const componentsDir = () => path.join(config.rootPath, 'src', 'components');
 
-export function validateDocument(doc: TextDocument) {
+export function validateDocument(doc: TextDocument): Diagnostic[] {
     const text = doc.getText();
     const diagnostics: Diagnostic[] = [];
 
@@ -68,7 +70,7 @@ export function validateDocument(doc: TextDocument) {
             if (ref.startsWith("http")) return 
             const refn = normalize_route_link(ref)
             if (!find_ref(refn)) {
-                err(`bad ref ${ref}`)
+                err(`bad ref ${ref} 2`)
             }
         }
     )
@@ -84,7 +86,6 @@ export function validateDocument(doc: TextDocument) {
         }
     )
 
-
     return diagnostics
 }
 
@@ -97,7 +98,7 @@ export function scanRoutes() {
     .filter(f => !['layout'].includes(path.basename(f)))
     .map(f => {
       let rel = path.relative(rD, f);
-      const isLocalized = rel.includes('[locale]');
+      const isLocalized = rel.includes(locale_str);
       rel = rel.replace(/\/index\.(tsx|jsx)$/, '/').replace(/\.(tsx|jsx)$/, '/').replace(/\/$/, '');
       if (isLocalized) rel = rel.replace('[locale]/', '');
       return { path: `/${rel}`, isLocalized };
